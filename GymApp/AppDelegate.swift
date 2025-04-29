@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "GymAppDataModel") // <-- Make sure the name matches your .xcdatamodeld filename
+        let container = NSPersistentContainer(name: "GymAppModel") // <-- Make sure the name matches your .xcdatamodeld filename
         container.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
