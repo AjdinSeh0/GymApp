@@ -1,9 +1,3 @@
-//
-//  HomeViewController.swift
-//  GymApp
-//
-//  Created by Ajdin Seho on 4/29/25.
-//
 
 import UIKit
 
@@ -12,7 +6,7 @@ class HomeViewController: UIViewController , UICollectionViewDataSource, UIColle
     
     var currentWeek: [Date] = []
     
-
+    var currentWeekOffset = 0
     
     
 
@@ -33,19 +27,17 @@ class HomeViewController: UIViewController , UICollectionViewDataSource, UIColle
             layout.sectionInset = .zero // Remove auto insets
 
             // This gets the actual width of the collection view frame
-            let screenWidth = UIScreen.main.bounds.width
             let collectionWidth = collectionView.frame.width
             let cellWidth = floor(collectionWidth / 7)
 
             layout.itemSize = CGSize(width: cellWidth, height: 80)
 
             // This centers the cells inside the collection view if there's a tiny gap
-            let totalCellWidth = cellWidth * 7
-            
         }
         
 
-        currentWeek = getDatesForCurrentWeek()
+        currentWeek = getDatesForWeek(offset: currentWeekOffset)
+
 
         // Do any additional setup after loading the view.
     }
@@ -53,31 +45,29 @@ class HomeViewController: UIViewController , UICollectionViewDataSource, UIColle
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        guard let layout = collectionView.collectionViewLayout as? PagedFlowLayout else { return }
 
-        let collectionWidth = collectionView.frame.width
+        let collectionWidth = collectionView.bounds.width
         let cellWidth = floor(collectionWidth / 7)
         layout.itemSize = CGSize(width: cellWidth, height: 80)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-
-        // 💡 Calculate leftover space to center cells
-        let totalCellWidth = cellWidth * 7
-        let inset = (collectionWidth - totalCellWidth) / 2
-        layout.sectionInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
+        layout.sectionInset = .zero
 
         collectionView.collectionViewLayout.invalidateLayout()
     }
 
 
+
     
     
     
     
     
-    func getDatesForCurrentWeek(startingFrom referenceDate: Date = Date()) -> [Date] {
+    func getDatesForWeek(offset: Int) -> [Date] {
         var week: [Date] = []
         let calendar = Calendar.current
+        let referenceDate = calendar.date(byAdding: .weekOfYear, value: offset, to: Date())!
         let weekday = calendar.component(.weekday, from: referenceDate)
         let startOfWeek = calendar.date(byAdding: .day, value: -((weekday - calendar.firstWeekday + 7) % 7), to: referenceDate)!
 
@@ -88,6 +78,22 @@ class HomeViewController: UIViewController , UICollectionViewDataSource, UIColle
         }
         return week
     }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageWidth = scrollView.frame.width
+        let currentPage = Int(scrollView.contentOffset.x / pageWidth)
+
+        // If user swiped to a different page:
+        if currentPage != 0 {
+            currentWeekOffset += (currentPage > 0 ? 1 : -1)
+            currentWeek = getDatesForWeek(offset: currentWeekOffset)
+            collectionView.reloadData()
+
+            // Reset scroll back to first page so swipes always go 0 -> next
+            collectionView.setContentOffset(.zero, animated: false)
+        }
+    }
+
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
