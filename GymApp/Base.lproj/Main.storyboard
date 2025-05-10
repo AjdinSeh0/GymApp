@@ -5,13 +5,14 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Home-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="Home" id="BYZ-38-t0r" customClass="HomeViewController" customModule="GymApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" title="Home" id="BYZ-38-t0r" customClass="HomeViewController" customModule="GymApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -31,27 +32,105 @@
                                         <rect key="frame" x="0.0" y="54.333333333333314" width="129.66666666666666" height="34.333333333333343"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="View History"/>
+                                        <connections>
+                                            <segue destination="Uaj-sm-yx6" kind="show" id="sbo-Ty-Dct"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="CTK-XX-a4n">
+                                <rect key="frame" x="0.0" y="111" width="393" height="80"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="iAe-5H-egg"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="7Y0-wB-dAa">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dayCell" id="peG-UU-s7O">
+                                        <rect key="frame" x="0.0" y="-24" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="drz-oG-ogs">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Z1X-oi-yVT" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="HOi-a7-A38"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CTK-XX-a4n" secondAttribute="trailing" id="MNZ-d3-yhv"/>
                             <constraint firstItem="Z1X-oi-yVT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bHk-IW-8kV"/>
+                            <constraint firstItem="CTK-XX-a4n" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dgQ-to-7eZ"/>
+                            <constraint firstItem="CTK-XX-a4n" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="v5j-Bv-jnF"/>
+                            <constraint firstItem="CTK-XX-a4n" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="wDI-ie-0Rt"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ha6-KD-87z"/>
+                    <connections>
+                        <outlet property="collectionView" destination="CTK-XX-a4n" id="6kU-3Q-G1M"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1020.6106870229007" y="3.5211267605633805"/>
         </scene>
+        <!--History-->
+        <scene sceneID="a1e-4r-Ns9">
+            <objects>
+                <tableViewController title="History" id="Uaj-sm-yx6" customClass="HistoryTableViewController" customModule="GymApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="sdb-DV-n6v">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="exerciseCell" textLabel="IAk-LK-qPE" detailTextLabel="65A-2j-ba9" style="IBUITableViewCellStyleSubtitle" id="6Mc-ZI-JnK">
+                                <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6Mc-ZI-JnK" id="XCN-w0-DDG">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IAk-LK-qPE">
+                                            <rect key="frame" x="20" y="6.0000000000000009" width="25" height="14.333333333333334"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="65A-2j-ba9">
+                                            <rect key="frame" x="19.999999999999996" y="22.333333333333336" width="43.666666666666664" height="14.333333333333334"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Uaj-sm-yx6" id="Zg9-lq-f87"/>
+                            <outlet property="delegate" destination="Uaj-sm-yx6" id="Ae4-KB-Nbu"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="6y9-Lv-3Aa"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m0v-px-0yf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1021" y="700"/>
+        </scene>
         <!--StartWorkout-->
         <scene sceneID="sWo-pK-z6W">
             <objects>
-                <viewController title="StartWorkout" id="oos-uU-IH7" customClass="StartWorkoutViewController" customModule="GymApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StartWorkoutViewController" title="StartWorkout" id="oos-uU-IH7" customClass="StartWorkoutViewController" customModule="GymApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="x7X-wa-9GE">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -114,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tf2-nY-cCF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1785.4961832061067" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="1886" y="4"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="K9w-wc-1Bu">
