@@ -17,6 +17,8 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var lblVolume: UILabel!
     
     var existingExercise: NSManagedObject?
+    
+    var selectedDate: Date?
 
     
     override func viewDidLoad() {
@@ -53,6 +55,12 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
 
         let volume = Double(sets * reps) * weight
 
+        let workout = NSEntityDescription.insertNewObject(forEntityName: "WorkoutEntity", into: context)
+        let workoutDate = selectedDate ?? Date() // fallback to today if nil
+        workout.setValue(workoutDate, forKey: "date")
+        workout.setValue("Unknown", forKey: "muscleGroup") // DEFAULT VALUE FOR NOW
+
+        
         //  EDIT or CREATE logic
         let exercise = existingExercise ?? NSEntityDescription.insertNewObject(forEntityName: "ExerciseEntity", into: context)
 
@@ -61,6 +69,8 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
         exercise.setValue(reps, forKey: "reps")
         exercise.setValue(weight, forKey: "weight")
         exercise.setValue(volume, forKey: "volume")
+        
+        exercise.setValue(workout, forKey: "linkedWorkout")
 
         do {
             try context.save()

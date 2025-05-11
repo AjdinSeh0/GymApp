@@ -33,20 +33,20 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="View History"/>
                                         <connections>
-                                            <segue destination="Uaj-sm-yx6" kind="show" id="sbo-Ty-Dct"/>
+                                            <action selector="onHistroyBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aXR-xB-IeH"/>
                                         </connections>
                                     </button>
                                 </subviews>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="CTK-XX-a4n">
-                                <rect key="frame" x="0.0" y="111" width="393" height="80"/>
+                                <rect key="frame" x="0.0" y="123.33333333333331" width="393" height="80"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="iAe-5H-egg"/>
                                 </constraints>
                                 <collectionViewLayout key="collectionViewLayout" id="oM7-G6-bYd" customClass="PagedFlowLayout" customModule="GymApp" customModuleProvider="target"/>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dayCell" id="peG-UU-s7O">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dayCell" id="peG-UU-s7O" customClass="DayCell" customModule="GymApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="drz-oG-ogs">
@@ -56,21 +56,30 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Cw-vc-Idk">
+                                <rect key="frame" x="176" y="103" width="41.333333333333343" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="8Cw-vc-Idk" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Cde-xI-1nf"/>
                             <constraint firstItem="Z1X-oi-yVT" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="HOi-a7-A38"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CTK-XX-a4n" secondAttribute="trailing" id="MNZ-d3-yhv"/>
                             <constraint firstItem="Z1X-oi-yVT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bHk-IW-8kV"/>
+                            <constraint firstItem="CTK-XX-a4n" firstAttribute="top" secondItem="8Cw-vc-Idk" secondAttribute="bottom" id="cE1-bY-4Qr"/>
                             <constraint firstItem="CTK-XX-a4n" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dgQ-to-7eZ"/>
+                            <constraint firstItem="8Cw-vc-Idk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="jQR-aY-oab"/>
                             <constraint firstItem="CTK-XX-a4n" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="v5j-Bv-jnF"/>
-                            <constraint firstItem="CTK-XX-a4n" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="wDI-ie-0Rt"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ha6-KD-87z"/>
                     <connections>
                         <outlet property="collectionView" destination="CTK-XX-a4n" id="6kU-3Q-G1M"/>
+                        <outlet property="lblMonthYear" destination="8Cw-vc-Idk" id="Z2w-VS-V1X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -80,11 +89,18 @@
         <!--History-->
         <scene sceneID="a1e-4r-Ns9">
             <objects>
-                <tableViewController title="History" id="Uaj-sm-yx6" customClass="HistoryTableViewController" customModule="GymApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="HistoryTableViewController" title="History" id="Uaj-sm-yx6" customClass="HistoryTableViewController" customModule="GymApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="sdb-DV-n6v">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <label key="tableFooterView" hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No workouts for this day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Of-VR-Gg4">
+                            <rect key="frame" x="0.0" y="121.66666793823242" width="393" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="exerciseCell" textLabel="IAk-LK-qPE" detailTextLabel="65A-2j-ba9" style="IBUITableViewCellStyleSubtitle" id="6Mc-ZI-JnK">
                                 <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
@@ -116,7 +132,16 @@
                             <outlet property="delegate" destination="Uaj-sm-yx6" id="Ae4-KB-Nbu"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="6y9-Lv-3Aa"/>
+                    <navigationItem key="navigationItem" id="6y9-Lv-3Aa">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="7gP-ds-A2f">
+                            <connections>
+                                <action selector="onAddWorkout:" destination="Uaj-sm-yx6" id="r09-a0-dan"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="lblNoWorkouts" destination="9Of-VR-Gg4" id="3do-LN-0t5"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m0v-px-0yf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
