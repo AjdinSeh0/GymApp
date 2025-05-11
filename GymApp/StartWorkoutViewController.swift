@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
+class StartWorkoutViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var txtName: UITextField!
     @IBOutlet weak var txtSets: UITextField!
@@ -16,9 +16,13 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var txtWeight: UITextField!
     @IBOutlet weak var lblVolume: UILabel!
     
+    @IBOutlet weak var muscleGroupPicker: UIPickerView!
     var existingExercise: NSManagedObject?
     
     var selectedDate: Date?
+    
+    var muscleGroups: [String] = []
+    var selectedGroup: String?
 
     
     override func viewDidLoad() {
@@ -37,6 +41,26 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
             
             // Manually update volume label
             textFieldDidChangeSelection(txtWeight)
+        }
+        //set up for the uipicker view
+        muscleGroupPicker.delegate = self
+        muscleGroupPicker.dataSource = self
+
+        // Load from UserDefaults
+        muscleGroups = UserDefaults.standard.stringArray(forKey: "muscleGroups") ?? ["Push", "Pull", "Legs"]
+        
+        if let exercise = existingExercise,
+           let workout = exercise.value(forKey: "linkedWorkout") as? NSManagedObject,
+           let group = workout.value(forKey: "muscleGroup") as? String,
+           let index = muscleGroups.firstIndex(of: group) {
+            selectedGroup = group
+            muscleGroupPicker.selectRow(index, inComponent: 0, animated: false)
+        }
+
+
+        // Preselect the first item
+        if !muscleGroups.isEmpty {
+            selectedGroup = muscleGroups[0]
         }
     }
     
@@ -58,7 +82,7 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
         let workout = NSEntityDescription.insertNewObject(forEntityName: "WorkoutEntity", into: context)
         let workoutDate = selectedDate ?? Date() // fallback to today if nil
         workout.setValue(workoutDate, forKey: "date")
-        workout.setValue("Unknown", forKey: "muscleGroup") // DEFAULT VALUE FOR NOW
+        workout.setValue(selectedGroup ?? "Unknown", forKey: "muscleGroup")
 
         
         //  EDIT or CREATE logic
@@ -69,8 +93,10 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
         exercise.setValue(reps, forKey: "reps")
         exercise.setValue(weight, forKey: "weight")
         exercise.setValue(volume, forKey: "volume")
-        
         exercise.setValue(workout, forKey: "linkedWorkout")
+        
+        
+        
 
         do {
             try context.save()
@@ -121,7 +147,25 @@ class StartWorkoutViewController: UIViewController, UITextFieldDelegate {
             lblVolume.text = String(format: "Volume: %.2f", volume)
         }
     }
+    // code for the muscleGroup Picker
     
-    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
 
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return muscleGroups.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return muscleGroups[row]
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedGroup = muscleGroups[row]
+    }
+    
+    
+    
+    
 }
